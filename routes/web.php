@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnakController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/anak',[AnakController::class, 'index']);
+Route::get('/tambah-anak', [AnakController::class, 'create']);
+Route::post('/anak/tambah-anak', [AnakController::class, 'store']);
