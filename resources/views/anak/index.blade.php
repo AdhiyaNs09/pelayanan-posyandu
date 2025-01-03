@@ -38,9 +38,18 @@
                                                 <td>{{ $child['jenis_kelamin'] ?? '-' }}</td>
                                                 <td>{{ $child['alamat'] ?? '-' }}</td>
                                                 <td>{{ $child['tanggal_lahir'] ?? '-' }}</td>
-                                                <td>
-                                                    <a href="" class="btn btn-sm btn-primary">Edit</a>
-                                                    <a href="" class="btn btn-sm btn-danger">Hapus</a>
+                                                <td class="">
+                                                    <a href="{{ url('edit-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
+                                                        class="btn btn-xs btn-primary">Edit</a>
+                                                    <a href="" class="btn btn-xs btn-success">Lihat</a>
+                                                    <form
+                                                        action="{{ url('hapus-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-xs btn-danger"
+                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         @endforeach

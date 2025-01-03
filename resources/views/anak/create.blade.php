@@ -11,7 +11,7 @@
                         </h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ url('anak/tambah-anak') }}" method="POST">
+                        <form action="{{ url('tambah-anak') }}" method="POST">
                             @csrf
 
                             <div class="form group mb-3">

@@ -20,6 +20,11 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index']);
-Route::get('/anak',[AnakController::class, 'index']);
+
+// menu anak
+Route::get('/anak', [AnakController::class, 'index']);
 Route::get('/tambah-anak', [AnakController::class, 'create']);
-Route::post('/anak/tambah-anak', [AnakController::class, 'store']);
+Route::post('/tambah-anak', [AnakController::class, 'store']);
+Route::get('/edit-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'edit']);
+Route::put('/update-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'update']);
+Route::delete('/hapus-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'destroy']);

@@ -57,7 +57,7 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        <li class="menu-item">
+        <li class="menu-item {{ request()->Is('dashboard') ? 'active' : '' }}">
             <a href="/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
@@ -68,8 +68,8 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Master Data</span>
         </li>
-        
-        <li class="menu-item">
+
+        <li class="menu-item {{ request()->Is('anak') ? 'active' : '' }}">
             <a href="/anak" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-arch"></i>
                 <div data-i18n="Basic">Anak</div>
@@ -94,7 +94,7 @@
           </a>
       </li> -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Transaksi</span></li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->Is('timbangan') ? 'active' : '' }}">
             <a href="/timbangan" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-analyse"></i>
                 <div data-i18n="Boxicons">Timbangan</div>
@@ -106,8 +106,6 @@
                 <div data-i18n="Boxicons">Logout</div>
             </a>
         </li>
-
-
 
     </ul>
 </aside>
