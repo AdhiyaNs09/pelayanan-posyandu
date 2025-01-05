@@ -17,13 +17,13 @@
                 @include('layouts.navbar')
                 <div class="container mt-3">
                     @if (session('error'))
-                        <div class="alert alert-danger">
+                        <div id="flash-message-error" class="alert alert-danger">
                             {{ session('error') }}
                         </div>
                     @endif
 
                     @if (session('success'))
-                        <div class="alert alert-success">
+                        <div id="flash-message-success" class="alert alert-success">
                             {{ session('success') }}
                         </div>
                     @endif
@@ -75,6 +75,7 @@
             }
         }, 5000); // 5000 ms = 5 detik
     </script>
+
 
 </body>
 

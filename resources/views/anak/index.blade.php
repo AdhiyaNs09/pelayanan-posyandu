@@ -6,15 +6,17 @@
         <div class="row">
             <div class="col-xl">
                 <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <a href="{{ url('tambah-anak') }}" class="btn btn-sm btn-primary float-end">Tambah Data</a>
-                    </div>
+                    @if (session('role') !== 'user')
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <a href="{{ url('tambah-anak') }}" class="btn btn-sm btn-primary float-end">Tambah Data</a>
+                        </div>
+                    @endif
 
                     <div class="card-body">
                         @if (count($data['children']) == 0)
                             <div class="alert alert-info">
-                                Tidak ada data anak yang ditemukan. 
-                                
+                                Tidak ada data anak yang ditemukan.
+
                             </div>
                         @else
                             <div class="card-datatable table-responsive">
@@ -40,14 +42,22 @@
                                                 <td>{{ $child['alamat'] ?? '-' }}</td>
                                                 <td>{{ $child['tanggal_lahir'] ?? '-' }}</td>
                                                 <td>
-                                                    <a href="{{ url('edit-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}" class="btn btn-xs btn-primary">Edit</a>
-                                                    <a href="{{ url('detail-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}" class="btn btn-xs btn-success">Lihat</a>
-                                                    <form action="{{ url('hapus-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
-                                                    </form>
+                                                    @if (session('role') !== 'user')
+                                                        <a href="{{ url('edit-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
+                                                            class="btn btn-xs btn-primary">Edit</a>
+                                                        <form
+                                                            action="{{ url('hapus-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-xs btn-danger"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                                                        </form>
+                                                    @endif
+                                                    <a href="{{ url('detail-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
+                                                        class="btn btn-xs btn-success">Lihat</a>
                                                 </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>

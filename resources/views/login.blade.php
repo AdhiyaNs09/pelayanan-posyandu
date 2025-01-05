@@ -95,7 +95,8 @@
                             </a>
                         </div>
 
-                        <form id="formAuthentication" class="mb-6">
+                        <form id="formAuthentication" class="mb-6" action="{{ url('login') }}" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label for="no_kk" class="form-label">No KK</label>
                                 <input type="text" class="form-control" id="no_kk" name="no_kk"
@@ -103,8 +104,22 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="nik_orangtua">Nik Orangtua</label>
-                                <input type="text" id="nik_orangtua" class="form-control" name="nik_orangtua" placeholder="Masukan Nik Orangtua"
-                                    autofocus />
+                                <input type="text" id="nik_orangtua" class="form-control" name="nik_orangtua"
+                                    placeholder="Masukan Nik Orangtua" autofocus />
+                            </div>
+
+                            <div class="container mt-3 mb-3">
+                                @if (session('error'))
+                                    <div id="flash-message-error" class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @endif
+
+                                @if (session('success'))
+                                    <div id="flash-message-success" class="alert alert-success">
+                                        {{ session('success') }}
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mb-6">
@@ -115,7 +130,6 @@
 
                     </div>
                 </div>
-                <!-- /Register -->
             </div>
         </div>
     </div>
@@ -125,23 +139,26 @@
     <script src="{{ asset('template/vendor/js/bootstrap.js') }}"></script>
     <script src="{{ asset('template/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('template/vendor/js/menu.js') }}"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-
-
-
     <!-- Main JS -->
     <script src="{{ asset('template/js/main.js') }}"></script>
-
-
-    <!-- Page JS -->
-
-
-
     <!-- Place this tag before closing body tag for github widget button. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <script>
+        // Fungsi untuk menyembunyikan pesan flash setelah 5 detik
+        setTimeout(function() {
+            let errorMessage = document.getElementById('flash-message-error');
+            let successMessage = document.getElementById('flash-message-success');
+
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+        }, 5000); // 5000 ms = 5 detik
+    </script>
 </body>
 
 </html>

@@ -36,7 +36,7 @@ class AnakController extends Controller
                 'title' => 'Data Anak',
                 'children' => $allChildren,
             ];
-
+          // dd($data);
             return view('anak.index', compact('data'));
         } catch (\Throwable $th) {
             // Tangani kesalahan jika terjadi masalah serius seperti koneksi Firebase

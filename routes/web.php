@@ -22,20 +22,25 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [LoginController::class, 'index']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::get('/logout', [LoginController::class, 'logout'])->middleware('role:admin|user');
 
-Route::get('/dashboard', [DashboardController::class, 'index']);
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('role:admin|user');
 
 // menu anak
-Route::get('/anak', [AnakController::class, 'index']);
-Route::get('/tambah-anak', [AnakController::class, 'create']);
-Route::post('/tambah-anak', [AnakController::class, 'store']);
-Route::get('/edit-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'edit']);
-Route::put('/update-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'update']);
-Route::get('/detail-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'show']);
-Route::delete('/hapus-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'destroy']);
+Route::get('/anak', [AnakController::class, 'index'])->middleware('role:admin|user');
+Route::get('/tambah-anak', [AnakController::class, 'create'])->middleware('role:admin');
+Route::post('/tambah-anak', [AnakController::class, 'store'])->middleware('role:admin');
+Route::get('/edit-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'edit'])->middleware('role:admin');
+Route::put('/update-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'update'])->middleware('role:admin');
+Route::get('/detail-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'show'])->middleware('role:admin|user');
+Route::delete('/hapus-anak/{nik_orangtua}/{anak_ke}', [AnakController::class, 'destroy'])->middleware('role:admin');
 
 // timbangan
-Route::get('/timbangan', [TimbanganController::class, 'index']);
-Route::get('/tambah-timbangan', [TimbanganController::class, 'create']);
-Route::post('/tambah-timbangan', [TimbanganController::class, 'store']);
-Route::delete('/hapus-timbangan/{nik_orangtua}/{anak_ke}', [TimbanganController::class, 'destroy']);
+Route::get('/timbangan', [TimbanganController::class, 'index'])->middleware('role:admin|user');
+Route::get('/tambah-timbangan', [TimbanganController::class, 'create'])->middleware('role:admin');
+Route::post('/tambah-timbangan', [TimbanganController::class, 'store'])->middleware('role:admin');
+Route::get('/edit-timbangan/{nik_orangtua}/{anak_ke}/{tanggal_timbangan}', [TimbanganController::class, 'edit'])->middleware('role:admin');
+Route::put('/update-timbangan/{nik_orangtua}/{anak_ke}/{tanggal_timbangan}', [TimbanganController::class, 'update'])->middleware('role:admin');
+Route::delete('/hapus-timbangan/{nik_orangtua}/{anak_ke}/{tanggal_timbangan}', [TimbanganController::class, 'destroy'])->middleware('role:admin');

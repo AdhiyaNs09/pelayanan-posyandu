@@ -8,6 +8,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // $role = session('role');
+        // dd($role);
         $data=[
             'title' => 'Dashboard'
         ];

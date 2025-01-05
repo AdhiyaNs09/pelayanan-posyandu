@@ -101,7 +101,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="/login" class="menu-link">
+            <a href="/logout" class="menu-link">
                 <i class="menu-icon tf-icons bx bxs-analyse"></i>
                 <div data-i18n="Boxicons">Logout</div>
             </a>

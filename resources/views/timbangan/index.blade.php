@@ -6,12 +6,13 @@
         <div class="row">
             <div class="col-xl">
                 <div class="card mb-4">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                        <a href="{{ url('tambah-timbangan') }}" class="btn btn-sm btn-primary float-end">Tambah Data</a>
+                    @if (session('role') !== 'user')
+                        <div class="card-header d-flex align-items-center justify-content-between">
+                            <a href="{{ url('tambah-timbangan') }}" class="btn btn-sm btn-primary float-end">Tambah Data</a>
+                        </div>
+                    @endif
 
-                    </div>
-
-                    <div class="container">
+                    <div class="container mt-2">
                         <!-- Filter Form -->
                         <form method="GET" action="{{ url()->current() }}">
                             <div class="row mb-4">
@@ -61,7 +62,9 @@
                                             <th>Berat Badan</th>
                                             <th>Tinggi Badan</th>
                                             <th>Tanggal Badan</th>
-                                            <th>Aksi</th>
+                                            @if (session('role') !== 'user')
+                                                <th>Aksi</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,20 +75,22 @@
                                                 <td>{{ $child['berat_badan'] }}</td>
                                                 <td>{{ $child['tinggi_badan'] }}</td>
                                                 <td>{{ $child['tanggal_histori'] }}</td>
-                                                <td>
-                                                    <a href="{{ url('edit-timbangan/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
-                                                        class="btn btn-xs btn-primary">Edit</a>
-                                                    {{-- <a href="{{ url('detail-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
-                                                        class="btn btn-xs btn-success">Lihat</a> --}}
-                                                    <form
-                                                        action="{{ url('hapus-timbangan/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-xs btn-danger"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
-                                                    </form>
-                                                </td>
+                                                @if (session('role') !== 'user')
+                                                    <td>
+                                                        <a href="{{ url('edit-timbangan/' . $child['nik_orangtua'] . '/' . $child['anak_ke'] . '/' . $child['tanggal_histori']) }}"
+                                                            class="btn btn-xs btn-primary">
+                                                            Edit
+                                                        </a>
+                                                        <form
+                                                            action="{{ url('hapus-timbangan/' . $child['nik_orangtua'] . '/' . $child['anak_ke'] . '/' . $child['tanggal_histori']) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-xs btn-danger"
+                                                                onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                                                        </form>
+                                                    </td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
