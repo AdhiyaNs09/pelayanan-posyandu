@@ -3,7 +3,7 @@
 
 <head>
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('template/img/favicon/favicon.ico') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +40,7 @@
                     <div class="card-body">
                         <!-- Logo -->
                         <div class="app-brand justify-content-center">
-                            <a href="index.html" class="app-brand-link gap-2">
+                            <a class="app-brand-link gap-2">
                                 <span class="app-brand-logo demo">
 
                                     <svg width="25" viewBox="0 0 25 42" version="1.1"
@@ -108,30 +108,28 @@
                                     placeholder="Masukan Nik Orangtua" autofocus />
                             </div>
 
-                            <div class="container mt-3 mb-3">
-                                @if (session('error'))
-                                    <div id="flash-message-error" class="alert alert-danger">
-                                        {{ session('error') }}
-                                    </div>
-                                @endif
-
-                                @if (session('success'))
-                                    <div id="flash-message-success" class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="mb-6">
+                            <div class="mb-4">
                                 <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
                             </div>
                         </form>
+                        <div class="text-center">
+                            @if (session('error'))
+                                <span id="flash-message-error" class="alert alert-danger">
+                                    {{ session('error') }}
+                                </span>
+                            @endif
 
-
+                            @if (session('success'))
+                                <span id="flash-message-success" class="alert alert-success">
+                                    {{ session('success') }}
+                                </span>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script src="{{ asset('template/vendor/libs/jquery/jquery.js') }}"></script>
