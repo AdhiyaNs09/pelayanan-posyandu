@@ -72,11 +72,6 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="form group mb-3">
-                                <label>Jenis Kelamin</label>
-                                <input type="text" name="jkl" class="form-control">
-
-                            </div> --}}
                             <div class="form-group mb-3">
                                 <label>Jenis Kelamin</label>
                                 <select name="jenis_kelamin" class="form-control">
@@ -106,18 +101,9 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{-- <div class="form group mb-3">
-                                <label>RT</label>
-                                <input type="text" name="rt" class="form-control">
-                            </div>
-                            <div class="form group mb-3">
-                                <label>RW</label>
-                                <input type="text" name="rw" class="form-control">
-                            </div> --}}
                             <div class="form group mb-3">
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </div>
-                            <input type="hidden" name="is_admin" value="1">
                         </form>
                     </div>
                 </div>

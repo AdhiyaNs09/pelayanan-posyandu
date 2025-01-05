@@ -21,10 +21,12 @@ class AnakController extends Controller
             $users = $this->database->getReference('users')->getValue();
 
             $allChildren = [];
-            foreach ($users as $nik_orangtua => $userData) {
-                if (isset($userData['datas'])) {
-                    foreach ($userData['datas'] as $key => $child) {
-                        $allChildren[] = array_merge($child, ['nik_orangtua' => $nik_orangtua]);
+            if ($users) {
+                foreach ($users as $nik_orangtua => $userData) {
+                    if (isset($userData['datas'])) {
+                        foreach ($userData['datas'] as $key => $child) {
+                            $allChildren[] = array_merge($child, ['nik_orangtua' => $nik_orangtua]);
+                        }
                     }
                 }
             }
@@ -33,17 +35,15 @@ class AnakController extends Controller
             $data = [
                 'title' => 'Data Anak',
                 'children' => $allChildren,
-                'nik_orangtua' => $nik_orangtua
-
-
             ];
 
-            //dd($data['children']);
             return view('anak.index', compact('data'));
         } catch (\Throwable $th) {
-            return redirect('/anak')->with('error', 'Data anak tidak ditemukan.');
+            // Tangani kesalahan jika terjadi masalah serius seperti koneksi Firebase
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat data anak.');
         }
     }
+
     public function create()
     {
         $data = [
@@ -54,7 +54,7 @@ class AnakController extends Controller
 
     public function store(Request $request)
     {
-
+        // Validasi input dari request
         $validator = Validator::make($request->all(), [
             'no_kk' => 'required|numeric',
             'nik_orangtua' => 'required|numeric',
@@ -87,19 +87,19 @@ class AnakController extends Controller
                 ->withInput();
         }
 
+        // Data untuk anak yang akan disimpan
         $data = [
+            'nama_orangtua' => $request->nama_orangtua,
             'nik_anak' => $request->nik_anak,
             'nama_anak' => $request->nama_anak,
             'anak_ke' => $request->anak_ke,
             'alamat' => $request->alamat,
             'jenis_kelamin' => $request->jenis_kelamin,
             'tanggal_lahir' => $request->tgl_lahir,
-            'berat_badan' => 0,
-            'tinggi_badan' => 0,
         ];
 
         try {
-            //Path ke data anak di Firebase
+            // Path ke data anak di Firebase
             $path = "users/{$request->nik_orangtua}/datas/anak_ke_{$request->anak_ke}";
 
             // Simpan data anak ke Firebase
@@ -114,6 +114,25 @@ class AnakController extends Controller
             ];
             $this->database->getReference("users/{$request->nik_orangtua}")->update($parentData);
 
+            // Cek apakah histori sudah ada
+            $historiPath = "{$path}/histori";
+            $existingHistori = $this->database->getReference($historiPath)->getValue();
+
+            if (empty($existingHistori)) {
+                // Jika histori belum ada, buat histori default
+                $currentDate = now(); // Tanggal saat ini
+                $nextMonth = $currentDate->copy()->addMonth(); // Tanggal satu bulan ke depan
+                $historiData = [
+                    $currentDate->format('Y-m-d') => [
+                        'berat_badan' => 0,
+                        'tinggi_badan' => 0,
+                    ],
+                ];
+
+                // Simpan histori ke Firebase
+                $this->database->getReference($historiPath)->set($historiData);
+            }
+
             // Redirect dengan pesan sukses jika operasi berhasil
             return redirect('/anak')->with('success', 'Data anak berhasil disimpan.');
         } catch (\Exception $e) {
@@ -121,6 +140,7 @@ class AnakController extends Controller
             return redirect('/anak')->with('error', 'Data anak gagal disimpan. Kesalahan: ' . $e->getMessage());
         }
     }
+
 
     public function edit($nik_orangtua, $anak_ke)
     {
@@ -184,6 +204,45 @@ class AnakController extends Controller
             return redirect('/anak')->with('error', 'Gagal memperbarui data anak: ' . $e->getMessage());
         }
     }
+
+    public function show($nik_orangtua, $anak_ke)
+    {
+        $path = "users/{$nik_orangtua}/datas/anak_ke_{$anak_ke}";
+        $paths = $this->database->getReference($path)->getValue();
+
+        if (!$paths) {
+            return redirect('/anak')->with('error', 'Data anak tidak ditemukan.');
+        }
+
+        // Ambil data histori
+        $histori = $paths['histori'] ?? [];
+
+        // Format data untuk grafik (opsional)
+        $chartData = [
+            'weights' => [],
+            'heights' => [],
+        ];
+        foreach ($histori as $tanggal => $data) {
+            $chartData['weights'][] = [
+                'x' => strtotime($tanggal) * 1000, // Format timestamp untuk JavaScript
+                'y' => $data['berat_badan'],
+            ];
+            $chartData['heights'][] = [
+                'x' => strtotime($tanggal) * 1000,
+                'y' => $data['tinggi_badan'],
+            ];
+        }
+
+        $data = [
+            'title' => 'Detail Data Anak',
+            'child' => $paths,
+            'histori' => $histori,
+            'chartData' => $chartData,
+        ];
+
+        return view('anak.detail', compact('data'));
+    }
+
 
     public function destroy($nik_orangtua, $anak_ke)
     {

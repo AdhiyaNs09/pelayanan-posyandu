@@ -11,9 +11,10 @@
                     </div>
 
                     <div class="card-body">
-                        @if (empty($data['children']))
+                        @if (count($data['children']) == 0)
                             <div class="alert alert-info">
-                                Tidak ada data anak yang ditemukan.
+                                Tidak ada data anak yang ditemukan. 
+                                
                             </div>
                         @else
                             <div class="card-datatable table-responsive">
@@ -22,7 +23,7 @@
                                         <tr>
                                             <th>ID</th>
                                             <th>Nama Anak</th>
-                                            <th>Tanggal Lahir</th>
+                                            <th>Nama Orangtua</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Alamat</th>
                                             <th>Tanggal Lahir</th>
@@ -34,21 +35,17 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $child['nama_anak'] ?? '-' }}</td>
-                                                <td>{{ $child['tanggal_lahir'] ?? '-' }}</td>
+                                                <td>{{ $child['nama_orangtua'] ?? '-' }}</td>
                                                 <td>{{ $child['jenis_kelamin'] ?? '-' }}</td>
                                                 <td>{{ $child['alamat'] ?? '-' }}</td>
                                                 <td>{{ $child['tanggal_lahir'] ?? '-' }}</td>
-                                                <td class="">
-                                                    <a href="{{ url('edit-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
-                                                        class="btn btn-xs btn-primary">Edit</a>
-                                                    <a href="" class="btn btn-xs btn-success">Lihat</a>
-                                                    <form
-                                                        action="{{ url('hapus-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}"
-                                                        method="POST" style="display:inline;">
+                                                <td>
+                                                    <a href="{{ url('edit-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}" class="btn btn-xs btn-primary">Edit</a>
+                                                    <a href="{{ url('detail-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}" class="btn btn-xs btn-success">Lihat</a>
+                                                    <form action="{{ url('hapus-anak/' . $child['nik_orangtua'] . '/' . $child['anak_ke']) }}" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-xs btn-danger"
-                                                            onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
+                                                        <button type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Hapus</button>
                                                     </form>
                                                 </td>
                                             </tr>
@@ -58,7 +55,6 @@
                             </div>
                         @endif
                     </div>
-                    <!-- Modal dan lainnya ... -->
                 </div>
             </div>
         </div>

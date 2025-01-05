@@ -77,24 +77,4 @@
             </div>
         </div>
     </div>
-
-
-    {{-- <script>
-        document.getElementById('adminRegistrationForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            var formData = new FormData(event.target);
-
-            firebase.database().ref('users').push({
-                // ... data user ...
-                'is_admin': formData.get('is_admin') === '1',
-            });
-
-            firebase.database().ref('tblm_anak').push({
-                // ... data anak ...
-            });
-
-            // ... logika lainnya setelah pendaftaran ...
-        });
-    </script> --}}
 @endsection

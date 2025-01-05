@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
-    data-assets-path="../assets/" data-template="vertical-menu-template-free">
+    data-assets-path="{{ asset('template') }}" data-template="vertical-menu-template-free">
 
 <head>
     @include('layouts.head')
@@ -15,6 +15,19 @@
             <div class="layout-page">
 
                 @include('layouts.navbar')
+                <div class="container mt-3">
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                </div>
 
                 {{-- //content --}}
                 <div class="content-wrapper">
@@ -47,6 +60,21 @@
         </div>
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+    <script>
+        // Fungsi untuk menyembunyikan pesan flash setelah 5 detik
+        setTimeout(function() {
+            let errorMessage = document.getElementById('flash-message-error');
+            let successMessage = document.getElementById('flash-message-success');
+
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+
+            if (successMessage) {
+                successMessage.style.display = 'none';
+            }
+        }, 5000); // 5000 ms = 5 detik
+    </script>
 
 </body>
 
