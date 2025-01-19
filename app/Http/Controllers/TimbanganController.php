@@ -111,6 +111,7 @@ class TimbanganController extends Controller
             'title' => 'Tambah Timbangan',
             'anak' => $anak, // Kirim data anak
         ];
+        //dd($data);
 
         return view('timbangan.create', compact('data', 'anak'));
     }
@@ -120,6 +121,7 @@ class TimbanganController extends Controller
         // Validasi input
         $validated = $request->validate([
             'anak_id' => 'required',
+            'nik_orangtua' => 'required',
             'tanggal_timbangan' => 'required|date',
             'berat_badan' => 'required|numeric',
             'tinggi_badan' => 'required|numeric',
@@ -127,25 +129,10 @@ class TimbanganController extends Controller
 
         // Ambil data dari request
         $anakId = $validated['anak_id'];
+        $nikOrangtua = $validated['nik_orangtua'];
         $tanggalTimbangan = $validated['tanggal_timbangan'];
         $beratBadan = $validated['berat_badan'];
         $tinggiBadan = $validated['tinggi_badan'];
-
-        // Ambil data anak dari Firebase
-        $users = $this->database->getReference('users')->getValue();
-        $nikOrangtua = null;
-
-        foreach ($users as $nik => $user) {
-            if (isset($user['datas'][$anakId])) {
-                $nikOrangtua = $nik;
-                break;
-            }
-        }
-
-        // Periksa jika orang tua dan anak ditemukan
-        if ($nikOrangtua === null) {
-            return redirect()->back()->with('error', 'Anak tidak ditemukan.');
-        }
 
         // Simpan data timbangan ke Firebase
         $timbanganRef = $this->database->getReference('users/' . $nikOrangtua . '/datas/' . $anakId . '/histori/' . $tanggalTimbangan);
@@ -154,9 +141,12 @@ class TimbanganController extends Controller
             'tinggi_badan' => $tinggiBadan,
         ]);
 
+        //dd($nikOrangtua);
         // Redirect kembali dengan sukses
         return redirect('/timbangan')->with('success', 'Data timbangan berhasil disimpan.');
     }
+
+
 
     public function edit($nikOrangtua, $anak_ke, $tanggalTimbangan)
     {

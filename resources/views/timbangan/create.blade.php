@@ -17,12 +17,14 @@
                                 <select id="anak_id" name="anak_id" class="form-control" required>
                                     <option value="">Pilih Anak</option>
                                     @foreach ($anak as $item)
-                                        <option value="{{ $item['id'] }}">
+                                        <option value="{{ $item['id'] }}" data-nik_orangtua="{{ $item['nik_orangtua'] }}">
                                             {{ $item['nama'] }} (NIK Orangtua: {{ $item['nik_orangtua'] }})
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+                            <!-- Hidden input untuk nik_orangtua -->
+                            <input type="hidden" id="nik_orangtua" name="nik_orangtua">
                             <div class="form-group mb-3">
                                 <label>Tanggal Timbangan</label>
                                 <input type="date" name="tanggal_timbangan" class="form-control" required>
@@ -91,6 +93,13 @@
             if (height) {
                 document.getElementById('tinggi_badan').value = height;
             }
+        });
+    </script>
+    <script>
+        document.getElementById('anak_id').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const nikOrangtua = selectedOption.getAttribute('data-nik_orangtua');
+            document.getElementById('nik_orangtua').value = nikOrangtua;
         });
     </script>
 @endsection
