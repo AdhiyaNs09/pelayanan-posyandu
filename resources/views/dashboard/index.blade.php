@@ -40,9 +40,12 @@
             <div class="col-lg-3 col-md-3 col-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
+                        <div class="card-title d-flex align-items-center justify-content-between">
+                            <div class="flex-shrink-0">
                                 <i class="tf-icons bx bxs-receipt" style="font-size: 3rem; color: #71DD38"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-5">
+                                <span class="h3 fw-semibold text-center">{{$data['jumlahTimbangan']}}</span>
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Jumlah Timbangan</span>
@@ -53,9 +56,12 @@
             <div class="col-lg-3 col-md-3 col-3 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <div class="card-title d-flex align-items-start justify-content-between">
-                            <div class="avatar flex-shrink-0">
-                                <i class="tf-icons bx bxs-receipt" style="font-size: 3rem; color: #71DD38"></i>
+                        <div class="card-title d-flex align-items-center justify-content-between">
+                            <div class="flex-shrink-0">
+                                <i class="tf-icons bx bxs-receipt" style="font-size: 3rem; color: #71DD38"></i>                                
+                            </div>
+                            <div class="flex-grow-1 ms-5">
+                                <span class="h3 fw-semibold text-center">{{$data['jumlahAnak']}}</span>
                             </div>
                         </div>
                         <span class="fw-semibold d-block mb-1">Jumlah Anak</span>

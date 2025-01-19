@@ -55,17 +55,17 @@
             onValue
         } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-database.js";
 
-        // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDkbd7UbQHTEANuT9quAdlIBX9LiRnwFj0",
-            authDomain: "pelayanan-posyandu.firebaseapp.com",
-            databaseURL: "https://pelayanan-posyandu-default-rtdb.firebaseio.com",
-            projectId: "pelayanan-posyandu",
-            storageBucket: "pelayanan-posyandu.appspot.com",
-            messagingSenderId: "259403986465",
-            appId: "1:259403986465:web:e1b434f4f1b083aa3c1560",
-            measurementId: "G-XTGPLHNTLN"
+            apiKey: "AIzaSyBO-n5zjICpWIPPq7j_4iR59MVK_RLB5eo",
+            authDomain: "timbangan-ff98c.firebaseapp.com",
+            databaseURL: "https://timbangan-ff98c-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "timbangan-ff98c",
+            storageBucket: "timbangan-ff98c.firebasestorage.app",
+            messagingSenderId: "297905665446",
+            appId: "1:297905665446:web:d43a145139e2ce3e72cb67",
+            measurementId: "G-D77YVMY6GR"
         };
+
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);

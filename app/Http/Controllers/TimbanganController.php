@@ -15,36 +15,73 @@ class TimbanganController extends Controller
     }
     public function index()
     {
-        $users = $this->database->getReference('users')->getValue();
+        try {
+            // Pastikan user sudah login
+            if (!session('nik_orangtua')) {
+                return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
+            }
 
-        $data = [
-            'title' => 'Timbangan',
-            'children' => []
-        ];
+            $role = session('role'); // Role dari session
+            $nikOrangtua = session('nik_orangtua'); // NIK Orang Tua dari session
+            $allTimbangans = [];
 
-        if ($users) {
-            foreach ($users as $nikOrangtua => $user) {
-                if (isset($user['datas'])) {
-                    foreach ($user['datas'] as $anakKey => $anakData) {
-                        $histori = $anakData['histori'] ?? [];
+            if ($role === 'admin') {
+                // Jika admin, ambil semua data timbangan
+                $users = $this->database->getReference('users')->getValue();
 
-                        foreach ($histori as $tanggal => $detail) {
-                            $data['children'][] = [
-                                'nama_anak' => $anakData['nama_anak'] ?? '-',
-                                'berat_badan' => $detail['berat_badan'] ?? '-',
-                                'tinggi_badan' => $detail['tinggi_badan'] ?? '-',
-                                'tanggal_histori' => $tanggal ?? '-',
+                if ($users) {
+                    foreach ($users as $nik => $user) {
+                        if (isset($user['datas'])) {
+                            foreach ($user['datas'] as $anakKey => $anak) {
+                                $histori = $anak['histori'] ?? [];
+
+                                foreach ($histori as $tanggal => $data) {
+                                    $allTimbangans[] = [
+                                        'nama_anak' => $anak['nama_anak'] ?? '-',
+                                        'berat_badan' => $data['berat_badan'] ?? '-',
+                                        'tinggi_badan' => $data['tinggi_badan'] ?? '-',
+                                        'tanggal_histori' => $tanggal,
+                                        'nik_orangtua' => $nik,
+                                        'anak_ke' => $anak['anak_ke'] ?? '-',
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            } elseif ($role === 'user') {
+                // Jika user, hanya ambil data miliknya
+                $path = "users/{$nikOrangtua}/datas";
+                $userDatas = $this->database->getReference($path)->getValue();
+
+                if ($userDatas) {
+                    foreach ($userDatas as $anakKey => $anak) {
+                        $histori = $anak['histori'] ?? [];
+
+                        foreach ($histori as $tanggal => $data) {
+                            $allTimbangans[] = [
+                                'nama_anak' => $anak['nama_anak'] ?? '-',
+                                'berat_badan' => $data['berat_badan'] ?? '-',
+                                'tinggi_badan' => $data['tinggi_badan'] ?? '-',
+                                'tanggal_histori' => $tanggal,
                                 'nik_orangtua' => $nikOrangtua,
-                                'anak_ke' => $anakData['anak_ke'] ?? '-',
-                                'nik_anak' => $anakData['nik_anak'] ?? '-'
+                                'anak_ke' => $anak['anak_ke'] ?? '-',
                             ];
                         }
                     }
                 }
             }
+
+            // Data untuk view
+            $data = [
+                'title' => 'Data Timbangan',
+                'children' => $allTimbangans,
+            ];
+
+            return view('timbangan.index', compact('data'));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat data timbangan.');
         }
-        //dd($data['children']);
-        return view('timbangan.index', compact('data'));
     }
 
     public function create()

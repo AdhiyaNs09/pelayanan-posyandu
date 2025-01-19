@@ -11,7 +11,7 @@
                     </div>
                     <div class="card-body">
                         <form
-                            action="{{ url('update-timbangan/' . $selectedData['nik_orangtua'] . '/' . $selectedData['anak_ke']  . '/' . $selectedData['tanggal_timbangan']) }}"
+                            action="{{ url('update-timbangan/' . $selectedData['nik_orangtua'] . '/' . $selectedData['anak_ke'] . '/' . $selectedData['tanggal_timbangan']) }}"
                             method="POST">
                             @csrf
                             @method('PUT')
@@ -54,14 +54,14 @@
 
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyDkbd7UbQHTEANuT9quAdlIBX9LiRnwFj0",
-            authDomain: "pelayanan-posyandu.firebaseapp.com",
-            databaseURL: "https://pelayanan-posyandu-default-rtdb.firebaseio.com",
-            projectId: "pelayanan-posyandu",
-            storageBucket: "pelayanan-posyandu.appspot.com",
-            messagingSenderId: "259403986465",
-            appId: "1:259403986465:web:e1b434f4f1b083aa3c1560",
-            measurementId: "G-XTGPLHNTLN"
+            apiKey: "AIzaSyBO-n5zjICpWIPPq7j_4iR59MVK_RLB5eo",
+            authDomain: "timbangan-ff98c.firebaseapp.com",
+            databaseURL: "https://timbangan-ff98c-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "timbangan-ff98c",
+            storageBucket: "timbangan-ff98c.firebasestorage.app",
+            messagingSenderId: "297905665446",
+            appId: "1:297905665446:web:57fc986672afd26872cb67",
+            measurementId: "G-571YGYVB2J"
         };
 
         // Initialize Firebase

@@ -17,16 +17,37 @@ class AnakController extends Controller
     public function index()
     {
         try {
-            // Path Firebase untuk mengambil semua data anak
-            $users = $this->database->getReference('users')->getValue();
+            // Pastikan user sudah login
+            if (!session('nik_orangtua')) {
+                return redirect('/')->with('error', 'Silakan login terlebih dahulu.');
+            }
 
+            // Ambil role dari session
+            $role = session('role');
             $allChildren = [];
-            if ($users) {
-                foreach ($users as $nik_orangtua => $userData) {
-                    if (isset($userData['datas'])) {
-                        foreach ($userData['datas'] as $key => $child) {
-                            $allChildren[] = array_merge($child, ['nik_orangtua' => $nik_orangtua]);
+
+            if ($role === 'admin') {
+                // Jika role adalah admin, ambil semua data anak
+                $users = $this->database->getReference('users')->getValue();
+
+                if ($users) {
+                    foreach ($users as $nik_orangtua => $userData) {
+                        if (isset($userData['datas'])) {
+                            foreach ($userData['datas'] as $key => $child) {
+                                $allChildren[] = array_merge($child, ['nik_orangtua' => $nik_orangtua]);
+                            }
                         }
+                    }
+                }
+            } elseif ($role === 'user') {
+                // Jika role adalah user, ambil data berdasarkan nik_orangtua
+                $nikOrangtua = session('nik_orangtua');
+                $path = "users/{$nikOrangtua}/datas";
+                $children = $this->database->getReference($path)->getValue();
+
+                if ($children) {
+                    foreach ($children as $key => $child) {
+                        $allChildren[] = array_merge($child, ['nik_orangtua' => $nikOrangtua]);
                     }
                 }
             }
@@ -36,13 +57,14 @@ class AnakController extends Controller
                 'title' => 'Data Anak',
                 'children' => $allChildren,
             ];
-          // dd($data);
+
             return view('anak.index', compact('data'));
         } catch (\Throwable $th) {
             // Tangani kesalahan jika terjadi masalah serius seperti koneksi Firebase
             return redirect()->back()->with('error', 'Terjadi kesalahan saat memuat data anak.');
         }
     }
+
 
     public function create()
     {
